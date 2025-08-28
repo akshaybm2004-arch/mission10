@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InstaBoost — Premium Followers</title>
+    <meta name="description" content="Get premium Instagram followers with a simple, sleek flow. Mock ad-gate and payment for demo.">
+    <link rel="canonical" href="https://example.com/" />
+    <meta property="og:title" content="InstaBoost — Premium Followers" />
+    <meta property="og:description" content="Smooth 3-step flow: enter profile, ad-gate, mock payment. Modern SaaS UI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=InstaBoost" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="InstaBoost — Premium Followers" />
+    <meta name="twitter:description" content="Smooth 3-step flow: enter profile, ad-gate, mock payment. Modern SaaS UI." />
+    <meta name="twitter:image" content="https://via.placeholder.com/1200x630.png?text=InstaBoost" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header container">
+      <div class="brand">
+        <div class="logo">IB</div>
+        <div class="brand-text">
+          <h1>InstaBoost</h1>
+          <p>Premium Followers, Effortless Flow</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <button id="themeToggle" class="btn ghost small-btn" aria-pressed="false" aria-label="Toggle theme">🌙</button>
+      </nav>
+    </header>
+
+    <section class="hero container">
+      <div class="hero-content">
+        <h2>Grow your Instagram with confidence</h2>
+        <p>Simple 3-step flow: enter profile, pass ad-gate, complete payment. Sleek UX, fully simulated.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#purchase">Get Started</a>
+          <a class="btn ghost" href="#how-it-works">Learn more</a>
+        </div>
+        <div class="trust-row" aria-label="Trusted by creators">
+          <div class="stars-summary">
+            <span class="stars" aria-label="4.9 out of 5">★★★★★</span>
+            <span class="muted small">4.9/5 from 2,100+ creators</span>
+          </div>
+          <div class="logos">
+            <span class="logo-chip">Canva</span>
+            <span class="logo-chip">Notion</span>
+            <span class="logo-chip">Figma</span>
+            <span class="logo-chip">Zapier</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="glow"></div>
+        <div class="card hero-card">
+          <div class="avatar"></div>
+          <div class="lines">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container layout">
+      <aside class="ad-column">
+        <div class="ad ad-300x250" aria-label="Ad placeholder 300x250">300 × 250 Ad</div>
+        <div class="ad ad-300x600" aria-label="Ad placeholder 300x600">300 × 600 Ad</div>
+        <div class="ad ad-300x250" aria-label="Ad placeholder 300x250">300 × 250 Ad</div>
+        <div class="ad ad-300x600" aria-label="Ad placeholder 300x600">300 × 600 Ad</div>
+        <div class="ad ad-300x250" aria-label="Ad placeholder 300x250">300 × 250 Ad</div>
+        <div class="ad ad-300x600" aria-label="Ad placeholder 300x600">300 × 600 Ad</div>
+        <div class="ad ad-300x250" aria-label="Ad placeholder 300x250">300 × 250 Ad</div>
+      </aside>
+
+      <main class="main">
+        <section id="purchase" class="card flow">
+          <div class="progress">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            <div class="progress-steps">
+              <span data-step="1" class="active">Profile</span>
+              <span data-step="2">Package</span>
+              <span data-step="3">Payment</span>
+              <span data-step="4">Done</span>
+            </div>
+          </div>
+          <div class="flow-header">
+            <h3>Purchase Followers</h3>
+            <p class="muted">Complete the steps below: enter profile, choose a package, and pay.</p>
+          </div>
+
+          <div class="steps">
+            <!-- Step 1: Profile Input + Ad Gate -->
+            <div class="step" data-step="1">
+              <div class="step-header">
+                <div class="step-index">1</div>
+                <div class="step-title">
+                  <h4>Instagram Profile</h4>
+                  <p class="muted small">Paste your public profile URL</p>
+                </div>
+              </div>
+              <div class="step-body">
+                <form id="profileForm" class="form-row" autocomplete="off">
+                  <input type="url" id="profileUrl" name="profileUrl" inputmode="url" placeholder="https://www.instagram.com/yourprofile/" required />
+                  <button id="watchAdBtn" class="btn primary" type="submit">Continue</button>
+                </form>
+                <p id="profileError" class="error-msg" role="alert" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <!-- Step 2: Select Package (locked until ad viewed) -->
+            <div class="step" data-step="2">
+              <div class="step-header">
+                <div class="step-index">2</div>
+                <div class="step-title">
+                  <h4>Select Followers</h4>
+                  <p class="muted small">Choose a package</p>
+                </div>
+              </div>
+              <div class="step-body">
+                <div id="packages" class="packages" role="listbox" aria-label="Follower packages">
+                  <button class="pkg" data-qty="100" data-price="10" role="option" aria-selected="false">
+                    <span class="qty">100</span>
+                    <span class="unit">followers</span>
+                    <span class="price">₹10</span>
+                  </button>
+                  <button class="pkg" data-qty="500" data-price="40" role="option" aria-selected="false">
+                    <span class="qty">500</span>
+                    <span class="unit">followers</span>
+                    <span class="price">₹40</span>
+                  </button>
+                  <button class="pkg popular" data-qty="1000" data-price="70" role="option" aria-selected="false">
+                    <span class="badge">Most Popular</span>
+                    <span class="qty">1,000</span>
+                    <span class="unit">followers</span>
+                    <span class="price">₹70</span>
+                  </button>
+                  <button class="pkg" data-qty="5000" data-price="299" role="option" aria-selected="false">
+                    <span class="qty">5,000</span>
+                    <span class="unit">followers</span>
+                    <span class="price">₹299</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Payment (mock) -->
+            <div class="step" data-step="3">
+              <div class="step-header">
+                <div class="step-index">3</div>
+                <div class="step-title">
+                  <h4>Payment</h4>
+                  <p class="muted small">Confirm and pay (simulated)</p>
+                </div>
+              </div>
+              <div class="step-body">
+                <div class="order card subtle" id="orderSummary">
+                  <div>
+                    <div class="muted small">Instagram</div>
+                    <div id="summaryProfile" class="mono">—</div>
+                  </div>
+                  <div>
+                    <div class="muted small">Package</div>
+                    <div id="summaryPackage">—</div>
+                  </div>
+                  <div class="total">
+                    <div>Total</div>
+                    <div id="summaryTotal" class="price">₹0</div>
+                  </div>
+                </div>
+                <button id="payBtn" class="btn primary" disabled>Pay Securely</button>
+                <p class="muted tiny">Payments are simulated for purposes.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="how-it-works" class="card info">
+          <h3>How it works</h3>
+          <ol class="hiw">
+            <li>Paste your public Instagram profile URL.</li>
+            <li>View a simulated 30-second ad to unlock packages.</li>
+            <li>Select a follower package and proceed to payment.</li>
+            <li>Payment is simulated—on success, you’ll see confirmation.</li>
+            <li>Allow up to 24 hours for delivery after confirmation.</li>
+          </ol>
+        </section>
+
+        <section id="pricing" class="card info">
+          <h3>Transparent Pricing</h3>
+          <p>Pick the package that suits your goals. No hidden fees.</p>
+          <div class="ad ad-728x90" aria-label="Ad placeholder 728x90">728 × 90 Ad</div>
+        </section>
+
+        <section id="testimonials" class="card info">
+          <h3>What creators say</h3>
+          <div id="testimonialsList" class="testimonials"></div>
+          <noscript>
+            <p class="muted small">Enable JavaScript to view testimonials.</p>
+          </noscript>
+        </section>
+
+        <section id="faq" class="card info">
+          <h3>FAQ</h3>
+          <details>
+            <summary>Is this a real service?</summary>
+            <p>This is a demo flow with simulated ads and payments for educational purposes.</p>
+          </details>
+          <details>
+            <summary>Do I need to log in?</summary>
+            <p>No login is required. We only ask for your public Instagram profile URL.</p>
+          </details>
+          <details>
+            <summary>How long does delivery take?</summary>
+            <p>Delivery is simulated—please allow up to 24 hours after confirmation.</p>
+          </details>
+        </section>
+
+        <section class="card info">
+          <h3>Sponsored</h3>
+          <div class="ad ad-728x90" aria-label="Ad placeholder 728x90">728 × 90 Ad</div>
+          <div style="height:10px"></div>
+          <div class="ad ad-728x90" aria-label="Ad placeholder 728x90">728 × 90 Ad</div>
+          <div style="height:10px"></div>
+          <div class="ad ad-728x90" aria-label="Ad placeholder 728x90">728 × 90 Ad</div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer container">
+      <p>© <span id="year"></span> InstaBoost. Not affiliated with Instagram.</p>
+    </footer>
+
+    
+
+    <!-- Payment Modal (Mock) -->
+    <div id="paymentModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="payTitle" aria-describedby="payDesc">
+      <div class="modal-backdrop" data-close="paymentModal"></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close="paymentModal" aria-label="Close">×</button>
+        <h4 id="payTitle">Secure Payment</h4>
+        <p id="payDesc" class="muted">Mock payment gateway. Click pay to simulate success.</p>
+        <div class="payment-box">
+          <div class="row"><span>Amount</span><strong id="payAmount">₹0</strong></div>
+          <div class="row"><span>For</span><span id="payFor">—</span></div>
+        </div>
+        <div id="paymentProcessing" class="processing hidden">
+          <div class="spinner"></div>
+          <span>Processing…</span>
+        </div>
+        <button id="confirmPayBtn" class="btn primary">Pay Now</button>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="confTitle" aria-describedby="confDesc">
+      <div class="modal-backdrop" data-close="confirmationModal"></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close="confirmationModal" aria-label="Close">×</button>
+        <h4 id="confTitle">Order Confirmed</h4>
+        <p id="confDesc">Thank you! Your request was received. Please allow up to 24 hours for delivery. Keep your profile public.</p>
+        <button class="btn" data-close="confirmationModal">Done</button>
+      </div>
+    </div>
+
+    
+
+    <!-- Confetti Layer -->
+    <canvas id="confetti" class="confetti-layer" width="1" height="1" aria-hidden="true"></canvas>
+
+    <!-- JSON-LD SEO -->
+    <script type="application/ld+json" id="jsonld"></script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
+

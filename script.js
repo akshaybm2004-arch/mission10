@@ -152,8 +152,40 @@
     if (!selectedPackage || !profileUrlValue) return;
     payAmount.textContent = formatINR(selectedPackage.price);
     payFor.textContent = `${selectedPackage.qty.toLocaleString()} followers for ${profileUrlValue}`;
-    openModal(paymentModal);
-    track('payment_opened');
+
+    // If Razorpay available, open checkout; otherwise fallback to mock modal
+    if (window.Razorpay) {
+      const options = {
+        key: 'rzp_test_1234567890abcdef', // TODO: replace with your actual test key ID
+        amount: selectedPackage.price * 100, // in paise
+        currency: 'INR',
+        name: 'InstaBoost',
+        description: `${selectedPackage.qty.toLocaleString()} followers`,
+        image: 'https://via.placeholder.com/96x96.png?text=IB',
+        handler: function () {
+          openModal(confirmationModal);
+          setProgress(4);
+          launchConfetti();
+          track('payment_success', { gateway: 'razorpay' });
+        },
+        prefill: {
+          name: '', email: '', contact: ''
+        },
+        notes: { profile: profileUrlValue, qty: String(selectedPackage.qty) },
+        theme: { color: getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#6d8cff' }
+      };
+      try {
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', function () { track('payment_failed', { gateway: 'razorpay' }); });
+        rzp.open();
+      } catch (e) {
+        openModal(paymentModal);
+        track('payment_opened');
+      }
+    } else {
+      openModal(paymentModal);
+      track('payment_opened');
+    }
   });
 
   confirmPayBtn.addEventListener('click', () => {

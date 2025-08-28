@@ -1,0 +1,15 @@
+# Normalize line endings across platforms
+# Auto-detect text files and ensure they are committed with LF
+* text=auto
+
+# Common binaries - keep as-is
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+

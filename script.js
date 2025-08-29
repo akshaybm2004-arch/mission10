@@ -197,7 +197,7 @@
       }
       
       const options = {
-        key: 'rzp_live_YOUR_KEY_HERE', // TODO: Replace with your live key ID
+        key: 'rzp_test_1234567890abcdef', // Test key - replace with your live key when ready
         amount: order.amount,
         currency: order.currency,
         name: 'InstaBoost',
@@ -205,6 +205,7 @@
         image: 'https://mission10.vercel.app/assets/logo.png',
         order_id: order.id,
         handler: async function(response) {
+          console.log('Payment successful:', response);
           // Verify payment on backend
           const verification = await verifyPayment(response);
           if (verification.verified) {
@@ -221,13 +222,24 @@
             track('payment_verification_failed', { order_id: order.id });
           }
         },
-        prefill: { name: '', email: '', contact: '' },
+        prefill: { 
+          name: '', 
+          email: '', 
+          contact: '' 
+        },
         notes: { 
           profile: profileUrlValue, 
           qty: String(selectedPackage.qty),
-          package: `${selectedPackage.qty} followers`
+          package: `${selectedPackage.qty} followers`,
+          razorpay_profile: 'razorpay.me/@akshaybachihallimanjaiah'
         },
-        theme: { color: '#6d8cff' }
+        theme: { color: '#6d8cff' },
+        modal: {
+          ondismiss: function() {
+            console.log('Payment modal closed');
+            track('payment_modal_closed', { order_id: order.id });
+          }
+        }
       };
       
       const rzp = new window.Razorpay(options);

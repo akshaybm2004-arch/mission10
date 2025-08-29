@@ -366,8 +366,18 @@
     <!-- JSON-LD SEO -->
     <script type="application/ld+json" id="jsonld"></script>
 
-    <!-- Razorpay Checkout (test mode) -->
+    <!-- Razorpay Checkout -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      // Initialize Razorpay with error handling
+      window.addEventListener('load', function() {
+        if (typeof window.Razorpay === 'undefined') {
+          console.log('Razorpay not loaded, will use fallback payment');
+        } else {
+          console.log('Razorpay loaded successfully');
+        }
+      });
+    </script>
 
     <script src="script.js"></script>
   </body>

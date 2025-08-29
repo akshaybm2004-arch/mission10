@@ -46,7 +46,8 @@ body {
 /* Header */
 .site-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
 .brand { display: flex; align-items: center; gap: 14px; }
-.logo { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #6d8cff, #9aaeff); display:flex; align-items:center; justify-content:center; color:#0b1020; font-weight:800; box-shadow: var(--shadow); }
+.logo { width: 42px; height: 42px; border-radius: 10px; background: #0f1630; display:flex; align-items:center; justify-content:center; box-shadow: var(--shadow); overflow: hidden; }
+.logo-img { width: 100%; height: 100%; object-fit: contain; }
 .brand-text h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.4px; }
 .brand-text p { margin: 0; color: var(--muted); font-size: 0.9rem; }
 .nav { display: flex; gap: 18px; }
@@ -146,6 +147,8 @@ input[type="url"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px va
 @keyframes pop { from { transform: scale(0.98); opacity: 0.8; } to { transform: scale(1); opacity: 1; } }
 
 .countdown { text-align:center; margin: 12px 0; color: var(--muted); }
+.ad-video-box { display:grid; gap:10px; margin: 10px 0; }
+.end-card { text-align:center; color: var(--text); font-weight:600; }
 .payment-box { background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin: 12px 0; display: grid; gap: 6px; }
 .payment-box .row { display: flex; align-items: center; justify-content: space-between; }
 .processing { display: flex; align-items: center; gap: 10px; margin: 10px 0; }

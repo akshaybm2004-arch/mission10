@@ -99,7 +99,7 @@
     }
   });
 
-  // Step 1: Profile (no ad gate)
+  // Step 1: Profile with forced 15s ad (auto end + 5s end card)
   profileForm.addEventListener('submit', (e) => {
     e.preventDefault();
     profileError.textContent = '';
@@ -112,11 +112,53 @@
     }
     profileUrlValue = url;
     summaryProfile.textContent = url;
-    // Jump directly to packages
-    setProgress(2);
+    // Show forced ad
+    startForcedAd();
     track('profile_submitted');
-    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  // Forced ad logic
+  const forcedAdModal = document.getElementById('adModal');
+  const forcedAdCountdown = document.getElementById('adCountdown');
+  const adEndCard = document.getElementById('adEndCard');
+  const adEndCountdown = document.getElementById('adEndCountdown');
+  const adProgress = document.getElementById('adProgress');
+  function startForcedAd() {
+    if (!forcedAdModal) { proceedToPackages(); return; }
+    let total = 15;
+    let endCard = 5;
+    adEndCard.classList.add('hidden');
+    adProgress.style.width = '0%';
+    openModal(forcedAdModal);
+    setProgress(2);
+    const tick = setInterval(() => {
+      total -= 1;
+      const pct = ((15 - total) / 15) * 100;
+      adProgress.style.width = pct + '%';
+      forcedAdCountdown.textContent = String(Math.max(0, total));
+      if (total <= 0) {
+        clearInterval(tick);
+        adEndCard.classList.remove('hidden');
+        const endTick = setInterval(() => {
+          endCard -= 1;
+          adEndCountdown.textContent = String(Math.max(0, endCard));
+          if (endCard <= 0) {
+            clearInterval(endTick);
+            closeModal(forcedAdModal);
+            proceedToPackages();
+          }
+        }, 1000);
+      }
+    }, 1000);
+  }
+  function proceedToPackages() {
+    const step1 = document.querySelector('[data-step="1"]');
+    if (step1) step1.classList.add('collapsed');
+    const step2El = document.querySelector('[data-step="2"]');
+    if (step2El) step2El.classList.remove('collapsed');
+    setProgress(2);
+    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   // Ad gate logic removed
 
   // Step 2: Select package
@@ -357,6 +399,20 @@
     requestAnimationFrame(tick);
     setTimeout(() => resize(), 0);
   }
+
+  // Safety: ensure scrolling is enabled if returning from external pages
+  function restoreScrollAndHideModals() {
+    try {
+      document.body.style.overflow = '';
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(m => m.setAttribute('aria-hidden', 'true'));
+      releaseFocus();
+    } catch (_) {}
+  }
+  window.addEventListener('pageshow', restoreScrollAndHideModals);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') restoreScrollAndHideModals();
+  });
 })();
 
 

@@ -23,7 +23,14 @@
   <body>
     <header class="site-header container">
       <div class="brand">
-        <div class="logo">IB</div>
+        <div class="logo" aria-label="InstaBoost logo">
+          <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="InstaBoost logo">
+            <rect x="0" y="0" width="42" height="42" rx="10" fill="#0f1630"/>
+            <circle cx="25" cy="27" r="6" fill="#000"/>
+            <circle cx="17" cy="12" r="5" fill="#62f5cf"/>
+            <path d="M14 18h6c-1 4-1 8 0 12h-6c-1-4-1-8 0-12z" fill="#62f5cf"/>
+          </svg>
+        </div>
         <div class="brand-text">
           <h1>InstaBoost</h1>
           <p>Premium Followers, Effortless Flow</p>
@@ -239,6 +246,21 @@
     </footer>
 
     
+    <!-- Forced Ad Modal (unskippable) -->
+    <div id="adModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="forcedAdTitle" aria-describedby="forcedAdDesc">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <h4 id="forcedAdTitle">Sponsored</h4>
+        <p id="forcedAdDesc" class="muted">Please wait while the ad plays. It will end automatically.</p>
+        <div class="ad-video-box">
+          <div class="ad ad-728x90" aria-hidden="true">728 × 90 Ad</div>
+          <div class="ad ad-300x250" aria-hidden="true">300 × 250 Ad</div>
+        </div>
+        <div class="countdown">Ad ends in <span id="adCountdown">15</span>s</div>
+        <div class="progress"><div class="progress-bar" id="adProgress" style="width:0%"></div></div>
+        <div id="adEndCard" class="end-card hidden">Wrapping up… <span id="adEndCountdown">5</span>s</div>
+      </div>
+    </div>
 
     <!-- Payment Modal (Mock) -->
     <div id="paymentModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="payTitle" aria-describedby="payDesc">

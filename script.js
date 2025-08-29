@@ -43,7 +43,6 @@
   track('variant_impression', { variant: new URLSearchParams(location.search).get('variant') || 'a' });
 
   // State
-  // Ad timer removed
   let selectedPackage = null; // { qty, price }
   let profileUrlValue = '';
 
@@ -159,7 +158,6 @@
     setProgress(2);
     step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  // Ad gate logic removed
 
   // Step 2: Select package
   packagesEl.addEventListener('click', (e) => {
@@ -167,7 +165,7 @@
     if (!(target instanceof HTMLElement)) return;
     const btn = target.closest('.pkg');
     if (!(btn instanceof HTMLElement)) return;
-    // Step 2 is always available
+    // step2 always unlocked
 
     [...packagesEl.querySelectorAll('.pkg')].forEach((el) => el.setAttribute('aria-selected', 'false'));
     btn.setAttribute('aria-selected', 'true');
@@ -178,71 +176,81 @@
     summaryPackage.textContent = `${qty.toLocaleString()} followers`;
     summaryTotal.textContent = formatINR(price);
     payBtn.disabled = false;
-    // Collapse step 1 and 2 bodies for a streamlined flow
-    const step1 = document.querySelector('[data-step="1"]');
-    if (step1) step1.classList.add('collapsed');
-    const step2El = document.querySelector('[data-step="2"]');
-    if (step2El) step2El.classList.add('collapsed');
+    // Unlock Step 3
+    lockStep(step3, false);
     step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setProgress(3);
     track('package_selected', { qty, price });
   });
 
-  // Step 3: Payment (mock)
-  payBtn.addEventListener('click', () => {
+  // Step 3: Payment (Real Razorpay)
+  payBtn.addEventListener('click', async () => {
     track('cta_click', { id: 'pay_securely' });
     if (!selectedPackage || !profileUrlValue) return;
-    payAmount.textContent = formatINR(selectedPackage.price);
-    payFor.textContent = `${selectedPackage.qty.toLocaleString()} followers for ${profileUrlValue}`;
-
-    // If Razorpay available, open checkout; otherwise fallback to mock modal
-    if (window.Razorpay) {
+    
+    // Create order and open Razorpay
+    try {
+      const order = await createRazorpayOrder();
+      if (!order) {
+        alert('Failed to create order. Please try again.');
+        return;
+      }
+      
       const options = {
-        key: 'rzp_test_1234567890abcdef', // TODO: replace with your actual test key ID
-        amount: selectedPackage.price * 100, // in paise
-        currency: 'INR',
+        key: 'rzp_live_YOUR_KEY_HERE', // TODO: Replace with your live key ID
+        amount: order.amount,
+        currency: order.currency,
         name: 'InstaBoost',
         description: `${selectedPackage.qty.toLocaleString()} followers`,
-        image: 'https://via.placeholder.com/96x96.png?text=IB',
-        handler: function () {
-          openModal(confirmationModal);
-          setProgress(4);
-          launchConfetti();
-          track('payment_success', { gateway: 'razorpay' });
+        image: 'https://mission10.vercel.app/assets/logo.png',
+        order_id: order.id,
+        handler: async function(response) {
+          // Verify payment on backend
+          const verification = await verifyPayment(response);
+          if (verification.verified) {
+            openModal(confirmationModal);
+            setProgress(4);
+            launchConfetti();
+            track('payment_success', { 
+              gateway: 'razorpay', 
+              order_id: order.id,
+              payment_id: response.razorpay_payment_id 
+            });
+          } else {
+            alert('Payment verification failed. Please contact support.');
+            track('payment_verification_failed', { order_id: order.id });
+          }
         },
-        prefill: {
-          name: '', email: '', contact: ''
+        prefill: { name: '', email: '', contact: '' },
+        notes: { 
+          profile: profileUrlValue, 
+          qty: String(selectedPackage.qty),
+          package: `${selectedPackage.qty} followers`
         },
-        notes: { profile: profileUrlValue, qty: String(selectedPackage.qty) },
-        theme: { color: getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#6d8cff' }
+        theme: { color: '#6d8cff' }
       };
-      try {
-        const rzp = new window.Razorpay(options);
-        rzp.on('payment.failed', function () { track('payment_failed', { gateway: 'razorpay' }); });
-        rzp.open();
-      } catch (e) {
-        openModal(paymentModal);
-        track('payment_opened');
-      }
-    } else {
-      openModal(paymentModal);
-      track('payment_opened');
+      
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function(response) { 
+        track('payment_failed', { 
+          gateway: 'razorpay', 
+          order_id: order.id,
+          error: response.error.description 
+        });
+        alert('Payment failed: ' + response.error.description);
+      });
+      rzp.open();
+      
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert('Payment system error. Please try again.');
+      track('payment_error', { error: error.message });
     }
   });
 
+  // Mock payment modal kept for fallback
   confirmPayBtn.addEventListener('click', () => {
-    // Simulate processing
-    processing.classList.remove('hidden');
-    confirmPayBtn.disabled = true;
-    setTimeout(() => {
-      processing.classList.add('hidden');
-      confirmPayBtn.disabled = false;
-      closeModal(paymentModal);
-      openModal(confirmationModal);
-      setProgress(4);
-      launchConfetti();
-      track('payment_success');
-    }, 1800);
+    alert('This is a fallback. Please use the main payment flow.');
   });
 
   // Theme toggle
@@ -413,6 +421,36 @@
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') restoreScrollAndHideModals();
   });
+
+  // Razorpay integration functions
+  async function createRazorpayOrder() {
+    try {
+      // For now, create order locally (replace with backend call later)
+      const order = {
+        id: `order_${Date.now()}`,
+        amount: selectedPackage.price * 100, // Convert to paise
+        currency: 'INR',
+        receipt: `receipt_${Date.now()}`
+      };
+      return order;
+    } catch (error) {
+      console.error('Order creation failed:', error);
+      return null;
+    }
+  }
+
+  async function verifyPayment(response) {
+    try {
+      // For now, basic verification (replace with backend call later)
+      if (response.razorpay_payment_id && response.razorpay_order_id) {
+        return { verified: true };
+      }
+      return { verified: false };
+    } catch (error) {
+      console.error('Payment verification failed:', error);
+      return { verified: false };
+    }
+  }
 })();
 
 

@@ -246,7 +246,8 @@
           qty: String(selectedPackage.qty),
           package: `${selectedPackage.qty} followers`,
           company: 'Mission 10',
-          razorpay_profile: 'razorpay.me/@akshaybachihallimanjaiah'
+          razorpay_profile: 'razorpay.me/@akshaybachihallimanjaiah',
+          payment_link: 'https://razorpay.me/@akshaybachihallimanjaiah'
         },
         theme: { color: '#6d8cff' },
         modal: {

@@ -23,8 +23,8 @@
   <body>
     <header class="site-header container">
       <div class="brand">
-        <div class="logo" aria-label="InstaBoost logo">
-          <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="InstaBoost logo">
+        <div class="logo" aria-label="Mission 10 logo">
+          <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mission 10 logo">
             <rect x="0" y="0" width="42" height="42" rx="10" fill="#0f1630"/>
             <circle cx="25" cy="27" r="6" fill="#000"/>
             <circle cx="17" cy="12" r="5" fill="#62f5cf"/>
@@ -32,7 +32,7 @@
           </svg>
         </div>
         <div class="brand-text">
-          <h1>InstaBoost</h1>
+          <h1>Mission 10</h1>
           <p>Premium Followers, Effortless Flow</p>
         </div>
       </div>
@@ -122,70 +122,96 @@
               </div>
             </div>
 
-            <!-- Step 2: Select Package (locked until ad viewed) -->
-            <div class="step" data-step="2">
-              <div class="step-header">
-                <div class="step-index">2</div>
-                <div class="step-title">
-                  <h4>Select Followers</h4>
-                  <p class="muted small">Choose a package</p>
-                </div>
-              </div>
-              <div class="step-body">
-                <div id="packages" class="packages" role="listbox" aria-label="Follower packages">
-                  <button class="pkg" data-qty="100" data-price="10" role="option" aria-selected="false">
-                    <span class="qty">100</span>
-                    <span class="unit">followers</span>
-                    <span class="price">₹10</span>
-                  </button>
-                  <button class="pkg" data-qty="500" data-price="40" role="option" aria-selected="false">
-                    <span class="qty">500</span>
-                    <span class="unit">followers</span>
-                    <span class="price">₹40</span>
-                  </button>
-                  <button class="pkg popular" data-qty="1000" data-price="70" role="option" aria-selected="false">
-                    <span class="badge">Most Popular</span>
-                    <span class="qty">1,000</span>
-                    <span class="unit">followers</span>
-                    <span class="price">₹70</span>
-                  </button>
-                  <button class="pkg" data-qty="5000" data-price="299" role="option" aria-selected="false">
-                    <span class="qty">5,000</span>
-                    <span class="unit">followers</span>
-                    <span class="price">₹299</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+                         <!-- Step 2: Package Selection -->
+             <div class="step" id="step2">
+               <div class="step-header">
+                 <div class="step-number">2</div>
+                 <div class="step-content">
+                   <h3>Choose Your Package</h3>
+                   <p class="muted">Select the number of followers you want</p>
+                 </div>
+               </div>
+               <div class="step-body">
+                 <div class="packages-grid">
+                   <button class="pkg" data-qty="100" data-price="10">
+                     <div class="qty">100</div>
+                     <div class="price">₹10</div>
+                     <div class="label">followers</div>
+                   </button>
+                   <button class="pkg" data-qty="500" data-price="40">
+                     <div class="qty">500</div>
+                     <div class="price">₹40</div>
+                     <div class="label">followers</div>
+                   </button>
+                   <button class="pkg popular" data-qty="1000" data-price="70">
+                     <div class="qty">1,000</div>
+                     <div class="price">₹70</div>
+                     <div class="label">followers</div>
+                     <span class="badge">Most Popular</span>
+                   </button>
+                   <button class="pkg" data-qty="5000" data-price="299">
+                     <div class="qty">5,000</div>
+                     <div class="price">₹299</div>
+                     <div class="label">followers</div>
+                   </button>
+                 </div>
+                 
+                 <!-- Payment Method Selection -->
+                 <div class="payment-methods" id="paymentMethods" style="display: none;">
+                   <h4>Select Payment Method</h4>
+                   <div class="payment-options">
+                     <button class="payment-option active" data-method="razorpay">
+                       <div class="payment-icon">💳</div>
+                       <div class="payment-details">
+                         <div class="payment-name">Razorpay</div>
+                         <div class="payment-desc">Secure online payment</div>
+                       </div>
+                     </button>
+                     <button class="payment-option" data-method="upi">
+                       <div class="payment-icon">📱</div>
+                       <div class="payment-details">
+                         <div class="payment-name">UPI</div>
+                         <div class="payment-desc">Instant bank transfer</div>
+                       </div>
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             </div>
 
-            <!-- Step 3: Payment (mock) -->
-            <div class="step" data-step="3">
-              <div class="step-header">
-                <div class="step-index">3</div>
-                <div class="step-title">
-                  <h4>Payment</h4>
-                  <p class="muted small">Confirm and pay (simulated)</p>
-                </div>
-              </div>
-              <div class="step-body">
-                <div class="order card subtle" id="orderSummary">
-                  <div>
-                    <div class="muted small">Instagram</div>
-                    <div id="summaryProfile" class="mono">—</div>
-                  </div>
-                  <div>
-                    <div class="muted small">Package</div>
-                    <div id="summaryPackage">—</div>
-                  </div>
-                  <div class="total">
-                    <div>Total</div>
-                    <div id="summaryTotal" class="price">₹0</div>
-                  </div>
-                </div>
-                <button id="payBtn" class="btn primary" disabled>Pay with Razorpay</button>
-                <p class="muted tiny">Secure payment powered by Razorpay</p>
-              </div>
-            </div>
+                         <!-- Step 3: Payment -->
+             <div class="step" id="step3">
+               <div class="step-header">
+                 <div class="step-number">3</div>
+                 <div class="step-content">
+                   <h3>Payment</h3>
+                   <p class="muted">Complete your purchase</p>
+                 </div>
+               </div>
+               <div class="step-body">
+                 <div class="payment-summary">
+                   <div class="summary-row">
+                     <span>Instagram Profile:</span>
+                     <span id="payFor">-</span>
+                   </div>
+                   <div class="summary-row">
+                     <span>Package:</span>
+                     <span id="payPackage">-</span>
+                   </div>
+                   <div class="summary-row total">
+                     <span>Total Amount:</span>
+                     <span id="payAmount">₹0</span>
+                   </div>
+                 </div>
+                 
+                 <div class="payment-actions">
+                   <button class="btn btn-primary btn-large" id="payBtn">
+                     Pay Securely
+                   </button>
+                   <p class="muted small">Secure payment powered by Razorpay</p>
+                 </div>
+               </div>
+             </div>
           </div>
         </section>
 
@@ -275,7 +301,7 @@
         <div class="container">
           <div class="footer-content">
             <div class="footer-section">
-              <h3>InstaBoost</h3>
+              <h3>Mission 10</h3>
               <p>Premium Instagram growth services with guaranteed results.</p>
             </div>
             <div class="footer-section">
@@ -301,12 +327,12 @@
               <ul>
                 <li><a href="contact-us.html">Help Center</a></li>
                 <li><a href="contact-us.html">Live Chat</a></li>
-                <li><a href="mailto:support@instaboost.com">Email Support</a></li>
+                <li><a href="mailto:support@mission10.com">Email Support</a></li>
               </ul>
             </div>
           </div>
           <div class="footer-bottom">
-            <p>&copy; <span id="year">2024</span> InstaBoost. All rights reserved.</p>
+            <p>&copy; <span id="year">2024</span> Mission 10. All rights reserved.</p>
           </div>
         </div>
       </footer>

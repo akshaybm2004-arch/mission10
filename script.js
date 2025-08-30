@@ -159,28 +159,52 @@
     step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Step 2: Select package
-  packagesEl.addEventListener('click', (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
-    const btn = target.closest('.pkg');
-    if (!(btn instanceof HTMLElement)) return;
-    // step2 always unlocked
+  // Package selection
+  document.querySelectorAll('.pkg').forEach(pkg => {
+    pkg.addEventListener('click', () => {
+      // Remove active class from all packages
+      document.querySelectorAll('.pkg').forEach(p => p.classList.remove('active'));
+      // Add active class to selected package
+      pkg.classList.add('active');
+      
+      selectedPackage = {
+        qty: parseInt(pkg.dataset.qty),
+        price: parseInt(pkg.dataset.price)
+      };
+      
+      // Show payment methods
+      document.getElementById('paymentMethods').style.display = 'block';
+      
+      // Update payment summary
+      document.getElementById('payFor').textContent = profileUrlValue;
+      document.getElementById('payPackage').textContent = `${selectedPackage.qty.toLocaleString()} followers`;
+      document.getElementById('payAmount').textContent = formatINR(selectedPackage.price);
+      
+      // Enable payment button
+      document.getElementById('payBtn').disabled = false;
+      
+      // Collapse steps 1 and 2, show step 3
+      document.getElementById('step1').classList.add('collapsed');
+      document.getElementById('step2').classList.add('collapsed');
+      
+      // Scroll to payment step
+      document.getElementById('step3').scrollIntoView({ behavior: 'smooth' });
+      
+      track('package_selected', { qty: selectedPackage.qty, price: selectedPackage.price });
+    });
+  });
 
-    [...packagesEl.querySelectorAll('.pkg')].forEach((el) => el.setAttribute('aria-selected', 'false'));
-    btn.setAttribute('aria-selected', 'true');
-
-    const qty = Number(btn.getAttribute('data-qty'));
-    const price = Number(btn.getAttribute('data-price'));
-    selectedPackage = { qty, price };
-    summaryPackage.textContent = `${qty.toLocaleString()} followers`;
-    summaryTotal.textContent = formatINR(price);
-    payBtn.disabled = false;
-    // Unlock Step 3
-    lockStep(step3, false);
-    step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setProgress(3);
-    track('package_selected', { qty, price });
+  // Payment method selection
+  document.querySelectorAll('.payment-option').forEach(option => {
+    option.addEventListener('click', () => {
+      // Remove active class from all options
+      document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+      // Add active class to selected option
+      option.classList.add('active');
+      
+      const method = option.dataset.method;
+      track('payment_method_selected', { method: method });
+    });
   });
 
   // Step 3: Payment (Real Razorpay with Fallback)
@@ -207,7 +231,7 @@
         key: 'rzp_test_51H5jKELQw8LQw8L', // Working test key for development
         amount: order.amount,
         currency: order.currency,
-        name: 'InstaBoost',
+        name: 'Mission 10',
         description: `${selectedPackage.qty.toLocaleString()} followers`,
         image: 'https://mission10.vercel.app/assets/logo.png',
         order_id: order.id,
@@ -238,6 +262,7 @@
           profile: profileUrlValue, 
           qty: String(selectedPackage.qty),
           package: `${selectedPackage.qty} followers`,
+          company: 'Mission 10',
           razorpay_profile: 'razorpay.me/@akshaybachihallimanjaiah'
         },
         theme: { color: '#6d8cff' },

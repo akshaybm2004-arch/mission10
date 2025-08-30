@@ -172,9 +172,6 @@
         price: parseInt(pkg.dataset.price)
       };
       
-      // Show payment methods
-      document.getElementById('paymentMethods').style.display = 'block';
-      
       // Update payment summary
       document.getElementById('payFor').textContent = profileUrlValue;
       document.getElementById('payPackage').textContent = `${selectedPackage.qty.toLocaleString()} followers`;
@@ -191,19 +188,6 @@
       document.getElementById('step3').scrollIntoView({ behavior: 'smooth' });
       
       track('package_selected', { qty: selectedPackage.qty, price: selectedPackage.price });
-    });
-  });
-
-  // Payment method selection
-  document.querySelectorAll('.payment-option').forEach(option => {
-    option.addEventListener('click', () => {
-      // Remove active class from all options
-      document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
-      // Add active class to selected option
-      option.classList.add('active');
-      
-      const method = option.dataset.method;
-      track('payment_method_selected', { method: method });
     });
   });
 

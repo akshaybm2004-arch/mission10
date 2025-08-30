@@ -255,11 +255,7 @@
                      💳 Pay Now
                    </a>
                    <p class="muted small">Secure payment via external gateway</p>
-                   <p class="muted small">
-                     <a href="https://bit.ly/4p0Qb4C" target="_blank" class="razorpay-link">
-                       🔗 Direct Payment Link
-                     </a>
-                   </p>
+
                  </div>
                </div>
              </div>
@@ -415,19 +411,6 @@
 
     <!-- JSON-LD SEO -->
     <script type="application/ld+json" id="jsonld"></script>
-
-    <!-- Razorpay Checkout -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
-      // Initialize Razorpay with error handling
-      window.addEventListener('load', function() {
-        if (typeof window.Razorpay === 'undefined') {
-          console.log('Razorpay not loaded, will use fallback payment');
-        } else {
-          console.log('Razorpay loaded successfully');
-        }
-      });
-    </script>
 
     <script src="script.js"></script>
   </body>

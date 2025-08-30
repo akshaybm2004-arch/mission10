@@ -216,128 +216,24 @@
     });
   });
 
-  // Step 3: Payment (Real Razorpay with Fallback)
+  // Step 3: Payment (Direct External Payment)
   payBtn.addEventListener('click', async () => {
-    track('cta_click', { id: 'pay_securely' });
+    track('cta_click', { id: 'pay_external' });
     if (!selectedPackage || !profileUrlValue) return;
     
-    // Check if Razorpay is loaded
-    if (typeof window.Razorpay === 'undefined') {
-      console.log('Razorpay not loaded, using fallback payment');
-      openMockPaymentModal();
-      return;
-    }
+    // Open external payment link
+    window.open('https://bit.ly/4p0Qb4C', '_blank');
     
-    // Create order and open Razorpay
-    try {
-      const order = await createRazorpayOrder();
-      if (!order) {
-        alert('Failed to create order. Please try again.');
-        return;
-      }
-      
-      const options = {
-        key: 'rzp_test_51H5jKELQw8LQw8L', // Working test key for development
-        amount: order.amount,
-        currency: order.currency,
-        name: 'Mission 10',
-        description: `${selectedPackage.qty.toLocaleString()} followers`,
-        image: 'https://mission10.vercel.app/assets/logo.png',
-        order_id: order.id,
-        handler: async function(response) {
-          console.log('Payment successful:', response);
-          // Verify payment on backend
-          const verification = await verifyPayment(response);
-          if (verification.verified) {
-            openModal(confirmationModal);
-            setProgress(4);
-            launchConfetti();
-            track('payment_success', { 
-              gateway: 'razorpay', 
-              order_id: order.id,
-              payment_id: response.razorpay_payment_id 
-            });
-          } else {
-            alert('Payment verification failed. Please contact support.');
-            track('payment_verification_failed', { order_id: order.id });
-          }
-        },
-        prefill: { 
-          name: '', 
-          email: '', 
-          contact: '' 
-        },
-        notes: { 
-          profile: profileUrlValue, 
-          qty: String(selectedPackage.qty),
-          package: `${selectedPackage.qty} followers`,
-          company: 'Mission 10',
-          razorpay_profile: 'razorpay.me/@akshaybachihallimanjaiah',
-          payment_link: 'https://razorpay.me/@akshaybachihallimanjaiah'
-        },
-        theme: { color: '#6d8cff' },
-        modal: {
-          ondismiss: function() {
-            console.log('Payment modal closed');
-            track('payment_modal_closed', { order_id: order.id });
-          }
-        }
-      };
-      
-      console.log('Opening Razorpay with options:', options);
-      
-      const rzp = new window.Razorpay(options);
-      
-      // Add event listeners
-      rzp.on('payment.failed', function(response) { 
-        console.log('Payment failed:', response);
-        track('payment_failed', { 
-          gateway: 'razorpay', 
-          order_id: order.id,
-          error: response.error.description 
-        });
-        alert('Payment failed: ' + response.error.description);
-      });
-      
-      rzp.on('payment.cancelled', function() {
-        console.log('Payment cancelled by user');
-        track('payment_cancelled', { order_id: order.id });
-      });
-      
-      rzp.open();
-      
-    } catch (error) {
-      console.error('Payment error:', error);
-      console.log('Falling back to mock payment due to error');
-      openMockPaymentModal();
-    }
-  });
-
-  // Fallback mock payment modal
-  function openMockPaymentModal() {
-    console.log('Opening mock payment modal');
-    payAmount.textContent = formatINR(selectedPackage.price);
-    payFor.textContent = `${selectedPackage.qty.toLocaleString()} followers for ${profileUrlValue}`;
-    openModal(paymentModal);
-    track('payment_opened', { method: 'mock_fallback' });
-  }
-
-  // Mock payment modal kept for fallback
-  confirmPayBtn.addEventListener('click', () => {
-    // Simulate processing
-    processing.classList.remove('hidden');
-    confirmPayBtn.disabled = true;
-    
+    // Show success message after a delay (simulating payment)
     setTimeout(() => {
-      processing.classList.add('hidden');
-      confirmPayBtn.disabled = false;
-      closeModal(paymentModal);
       openModal(confirmationModal);
       setProgress(4);
       launchConfetti();
-      track('payment_success', { method: 'mock_fallback' });
-    }, 1800);
+      track('payment_success', { method: 'external_gateway' });
+    }, 2000);
   });
+
+
 
   // Theme toggle
   const themeToggle = document.getElementById('themeToggle');
@@ -508,35 +404,7 @@
     if (document.visibilityState === 'visible') restoreScrollAndHideModals();
   });
 
-  // Razorpay integration functions
-  async function createRazorpayOrder() {
-    try {
-      // For now, create order locally (replace with backend call later)
-      const order = {
-        id: `order_${Date.now()}`,
-        amount: selectedPackage.price * 100, // Convert to paise
-        currency: 'INR',
-        receipt: `receipt_${Date.now()}`
-      };
-      return order;
-    } catch (error) {
-      console.error('Order creation failed:', error);
-      return null;
-    }
-  }
 
-  async function verifyPayment(response) {
-    try {
-      // For now, basic verification (replace with backend call later)
-      if (response.razorpay_payment_id && response.razorpay_order_id) {
-        return { verified: true };
-      }
-      return { verified: false };
-    } catch (error) {
-      console.error('Payment verification failed:', error);
-      return { verified: false };
-    }
-  }
 })();
 
 

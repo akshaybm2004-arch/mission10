@@ -262,87 +262,64 @@ input[type="url"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px va
   .order { grid-template-columns: 1fr; }
 }
 
-/* Trust Badges Section */
+/* Trust Badges */
 .trust-badges {
-  background: var(--bg-secondary);
-  padding: 60px 0;
-  margin-top: 60px;
-  border-top: 1px solid var(--border);
+  background: var(--card-bg);
+  padding: 3rem 0;
+  margin: 2rem 0;
 }
 
 .trust-badges h2 {
   text-align: center;
-  color: var(--text-primary);
-  margin-bottom: 40px;
-  font-size: 2em;
+  margin-bottom: 2rem;
+  color: var(--text);
 }
 
 .badges-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
   max-width: 1000px;
   margin: 0 auto;
 }
 
 .badge {
-  text-align: center;
-  padding: 30px 20px;
-  background: white;
+  background: var(--bg);
+  padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease;
 }
 
 .badge:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
 }
 
 .badge-icon {
-  font-size: 3em;
-  margin-bottom: 15px;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .badge h3 {
-  color: var(--text-primary);
-  margin-bottom: 10px;
-  font-size: 1.2em;
+  margin: 0 0 0.5rem 0;
+  color: var(--text);
+  font-size: 1.1rem;
 }
 
 .badge p {
-  color: var(--text-secondary);
   margin: 0;
-  font-size: 0.9em;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .badge a {
   color: var(--primary);
   text-decoration: none;
-  font-weight: 500;
 }
 
 .badge a:hover {
   text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .trust-badges {
-    padding: 40px 0;
-  }
-  
-  .badges-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-  
-  .badge {
-    padding: 20px 15px;
-  }
-  
-  .badge-icon {
-    font-size: 2.5em;
-  }
 }
 
 /* Payment Summary */

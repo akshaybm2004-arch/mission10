@@ -8,9 +8,10 @@
 
   // Ad modal removed
 
-  const step2 = document.querySelector('[data-step="2"]');
-  const step3 = document.querySelector('[data-step="3"]');
-  const packagesEl = document.getElementById('packages');
+  const step1 = document.querySelector('[data-step="1"]');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const packagesEl = document.querySelector('.packages-grid');
   const payBtn = document.getElementById('payBtn');
 
   const summaryProfile = document.getElementById('summaryProfile');
@@ -151,12 +152,10 @@
     }, 1000);
   }
   function proceedToPackages() {
-    const step1 = document.querySelector('[data-step="1"]');
     if (step1) step1.classList.add('collapsed');
-    const step2El = document.querySelector('[data-step="2"]');
-    if (step2El) step2El.classList.remove('collapsed');
+    if (step2) step2.classList.remove('collapsed');
     setProgress(2);
-    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (step2) step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Package selection
@@ -181,8 +180,8 @@
       document.getElementById('payBtn').disabled = false;
       
       // Collapse steps 1 and 2, show step 3
-      document.getElementById('step1').classList.add('collapsed');
-      document.getElementById('step2').classList.add('collapsed');
+      if (step1) step1.classList.add('collapsed');
+      if (step2) step2.classList.add('collapsed');
       
       // Scroll to payment step
       document.getElementById('step3').scrollIntoView({ behavior: 'smooth' });

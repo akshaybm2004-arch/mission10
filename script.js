@@ -123,27 +123,53 @@
   const adEndCard = document.getElementById('adEndCard');
   const adEndCountdown = document.getElementById('adEndCountdown');
   const adProgress = document.getElementById('adProgress');
+  
   function startForcedAd() {
-    if (!forcedAdModal) { proceedToPackages(); return; }
+    console.log('Starting forced ad...');
+    console.log('Modal elements found:', {
+      modal: forcedAdModal,
+      countdown: forcedAdCountdown,
+      endCard: adEndCard,
+      endCountdown: adEndCountdown,
+      progress: adProgress
+    });
+    
+    if (!forcedAdModal || !forcedAdCountdown || !adEndCard || !adEndCountdown || !adProgress) {
+      console.error('Some ad modal elements not found, proceeding directly to packages');
+      proceedToPackages();
+      return;
+    }
+    
     let total = 15;
     let endCard = 5;
+    
+    // Reset modal state
     adEndCard.classList.add('hidden');
     adProgress.style.width = '0%';
+    forcedAdCountdown.textContent = '15';
+    
+    console.log('Opening ad modal...');
     openModal(forcedAdModal);
     setProgress(2);
+    
     const tick = setInterval(() => {
       total -= 1;
       const pct = ((15 - total) / 15) * 100;
       adProgress.style.width = pct + '%';
       forcedAdCountdown.textContent = String(Math.max(0, total));
+      
       if (total <= 0) {
         clearInterval(tick);
+        console.log('Ad countdown finished, showing end card...');
         adEndCard.classList.remove('hidden');
+        
         const endTick = setInterval(() => {
           endCard -= 1;
           adEndCountdown.textContent = String(Math.max(0, endCard));
+          
           if (endCard <= 0) {
             clearInterval(endTick);
+            console.log('End card finished, closing modal and proceeding...');
             closeModal(forcedAdModal);
             proceedToPackages();
           }
